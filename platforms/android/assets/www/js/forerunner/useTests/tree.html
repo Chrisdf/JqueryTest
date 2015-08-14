@@ -1,0 +1,54 @@
+<html>
+<body>
+<script src="../dist/fdb-all.js"></script>
+<script>
+	var tree = new ForerunnerDB.shared.modules.BinaryTree(),
+		search,
+		alpha,
+		data = [],
+		count = 50000,
+		countMax = count,
+		total = count,
+		name,
+		obj,
+		start,
+		overall = 0,
+		names = ['Jim', 'Alan', 'Bob', 'Nigel', 'Jane', 'Alice', 'DJ Kool', 'Anne', 'Tamara'];
+
+	tree.index({
+		name: 1,
+		age: 1
+	});
+
+	// Generate names and ages
+	console.time('Generate ' + countMax + ' records');
+	while (count--) {
+		name = names[Math.floor(Math.random() * names.length)];
+
+		data.push({
+			name: name,
+			age: Math.ceil(Math.random() * 100),
+			cash: Math.ceil(Math.random() * 1000)
+		});
+	}
+	//console.log(data);
+	console.timeEnd('Generate ' + countMax + ' records');
+
+	console.time('Insert ' + countMax + ' records');
+	console.log(tree.insert(data));
+	console.timeEnd('Insert ' + countMax + ' records');
+
+	console.time('Walk tree in order');
+	tree.inOrder('hash');
+	console.timeEnd('Walk tree in order');
+
+	console.time('Query tree single key');
+	console.log(tree.lookup({name: 'Jim'}));
+	console.timeEnd('Query tree single key');
+
+	console.time('Query tree multi key');
+	console.log(tree.lookup({name: 'Jim', age: 12}));
+	console.timeEnd('Query tree multi key');
+</script>
+</body>
+</html>
